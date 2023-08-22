@@ -1,18 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import main from '../styles/Main';
-
-
-
-
-
-
-
-
-
-
-
-
 
 export default function Group({ navigation }) {
     return (
@@ -23,8 +11,24 @@ export default function Group({ navigation }) {
                 </View>
                 <Text style={{...main.mainText}}>Welcome, User!</Text>
             </View>
-            <View>
-
+            <View style={styles.mainContainer}>
+                <View style={styles.mainContainerHeader}>
+                    <Text style={{...main.mainText}}>Your groups</Text>
+                    <View style={styles.containerButtons}>
+                        <TouchableOpacity>
+                            <Text>S</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Text>R</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Text>C</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View style={styles.group}>
+                    <Text style={{...main.title}}>Group name</Text>
+                </View>
             </View>
         </View>
     )
@@ -47,5 +51,24 @@ const styles = StyleSheet.create({
         backgroundColor: '#15FF10',
         width: wp('2%'),
         height: hp('2%')
+    },
+    mainContainer: {
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    mainContainerHeader: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    containerButtons: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around'
+    },
+    group: {
+        backgroundColor: '#6564D0',
+        borderRadius: 15,
+        padding: 20
     }
 })
