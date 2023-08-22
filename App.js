@@ -7,6 +7,7 @@ import * as Font from 'expo-font';
 
 import Home from './screens/Home.js';
 import Login from './screens/Login.js';
+import Group from './screens/Group.js';
 
 const Stack = createNativeStackNavigator()
 
@@ -31,6 +32,7 @@ export default function App() {
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Group" component={Group} />
         </Stack.Navigator>
       </NavigationContainer>
     )

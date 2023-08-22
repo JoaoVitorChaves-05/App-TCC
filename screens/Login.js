@@ -4,7 +4,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import ResponsiveButton from '../components/ResponsiveButton.js';
 import main from '../styles/Main.js'
 
-export default function Login () {
+export default function Login ({ navigation }) {
     return (
         <View style={{...main.backgroundScreens, ...main.container}}>
             <View style={styles.header}>
@@ -25,7 +25,7 @@ export default function Login () {
                     <TextInput style={{...main.textInput, textAlign: 'center'}} placeholder="Password" secureTextEntry={true} />
                 </View>
                 <View style={{...main.formArea}}>
-                    <ResponsiveButton text="Confirm" />
+                    <ResponsiveButton text="Confirm" callback={() => navigation.navigate('Group')}/>
                 </View>
             </View>
         </View>
