@@ -1,12 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { StyleSheet, Text, View, TextInput } from 'react-native';
 import ResponsiveButton from '../components/ResponsiveButton.js';
 import main from '../styles/Main.js'
 
 export default function Login ({ navigation }) {
     return (
         <View style={{...main.backgroundScreens, ...main.container}}>
+            <StatusBar style='light' />
             <View style={styles.header}>
                 <Text style={{...main.title}}>
                     Security System

@@ -43,7 +43,7 @@ const main = StyleSheet.create({
         color: 'black',
         marginTop: 10,
         fontFamily: 'Nunito',
-        fontStyle: 'bold'
+        fontWeight: 'bold'
     }
 })
 

@@ -8,6 +8,7 @@ export default function Home({ navigation }) {
 
     return (
         <View style={{...main.backgroundScreens, ...main.container}}>
+            <StatusBar style='light' />
             <View style={styles.logoContainer}>
                 <Image source={logo} style={styles.image} />
                 <Text style={{...main.title}}>Security System</Text>
@@ -16,7 +17,6 @@ export default function Home({ navigation }) {
                 <ResponsiveButton text="Enter" callback={() => navigation.navigate('Login') }/>
                 <Text style={{...main.secondaryText, marginTop: 15}}>Sign Up</Text>
             </View>
-            <StatusBar style="auto" />
         </View>
     )
 }
