@@ -1,6 +1,8 @@
-import { useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, BackHandler, Alert, FlatList } from 'react-native';
+import { useEffect, useState} from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, BackHandler, Alert, FlatList, Modal} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import createGroup from "../components/modalCreateGroup.js" ;
+import modalAddGroup from "../components/modalAddGroup.js";
 
 import UserItem from '../components/UserItem.js';
 import ResponsiveButton from '../components/ResponsiveButton.js';
@@ -52,6 +54,7 @@ const DATA = [
 
 export default function Group({ navigation }) {
 
+    const [createGroupModalVisible, setCreateGroupModalVisible] = useState(false);
     useEffect(() => {
         const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
             alert(navigation)
@@ -78,19 +81,20 @@ export default function Group({ navigation }) {
                 <View style={styles.mainContainerHeader}>
                     <Text style={{...main.mainText, marginBottom: 10}}>Your groups</Text>
                     <View style={{...styles.containerButtons, marginBottom: 10}}>
-                        <TouchableOpacity styles={styles.buttons}>
+                        <TouchableOpacity style={styles.buttons} onPress={() => setCreateGroupModalVisible(true)}>
                             <Text>S</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity styles={styles.buttons}>
+                        <TouchableOpacity style={styles.buttons}>
                             <Text>R</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity styles={styles.buttons}>
+                        <TouchableOpacity style={styles.buttons}>
                             <Text>C</Text>
                         </TouchableOpacity>
+
                     </View>
                 </View>
                 <View style={styles.group}>
-                    <Text style={{...main.title}}>Group name</Text>
+                    <Text style={{...main.title, ...styles.groupNameTitle}}>Group name</Text>
                     <FlatList 
                         data={DATA}
                         renderItem={({item}) => <UserItem username={item.username} position={item.position} />}
@@ -123,9 +127,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: wp('100%')
     },
+    groupNameTitle: {
+        fontSize: 20,
+    },
     photoContainer: {
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'left'
     },
     photo: {
         width: wp('20%'),
