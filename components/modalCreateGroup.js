@@ -7,7 +7,7 @@ export default function createGroup({createGroupModalVisible, setCreateGroupModa
             <Modal
                 animationType="slide"
                 transparent={true}
-                visible={modalVisible}
+                visible={createGroupModalVisible}
                 onRequestClose={() => {
                     Alert.alert('Modal has been closed');
                     setCreateGroupModalVisible(!createGroupModalVisible);
