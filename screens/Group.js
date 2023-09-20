@@ -1,7 +1,7 @@
 import { useEffect, useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, BackHandler, Alert, FlatList, Modal} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import createGroup from "../components/modalCreateGroup.js" ;
+import ModalCreateGroup from "../components/modalCreateGroup.js" ;
 import modalAddGroup from "../components/modalAddGroup.js";
 
 import UserItem from '../components/UserItem.js';
@@ -66,6 +66,7 @@ export default function Group({ navigation }) {
 
     return (
         <View style={{...main.backgroundScreens, ...main.container}}>
+            <ModalCreateGroup visible={createGroupModalVisible} setVisible={setCreateGroupModalVisible}/>
             <View style={styles.header}>
                 <View style={styles.photoContainer}>
                     <View style={styles.photo}>

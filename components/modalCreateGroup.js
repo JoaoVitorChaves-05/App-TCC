@@ -1,29 +1,27 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, BackHandler, Alert, FlatList, Modal, Pressable} from 'react-native';
 
-export default function createGroup({createGroupModalVisible, setCreateGroupModalVisible}){    
+export default function modalCreateGroup({visible, setVisible}){    
     return (
-        <View>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={createGroupModalVisible}
-                onRequestClose={() => {
-                    Alert.alert('Modal has been closed');
-                    setCreateGroupModalVisible(!createGroupModalVisible);
-                }}>
-                <View style={styles.centeredView}>
+    <Modal
+        animationType="slide"
+        transparent={true}
+        visible={visible}
+        onRequestClose={() => {
+            Alert.alert('Modal has been closed');
+            setVisible(!visible);
+        }}>
+        <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Hello World!</Text>
             <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={() => setCreateGroupModalVisible(!createGroupModalVisible)}>
+              onPress={() => setVisible(!visible)}>
               <Text style={styles.textStyle}>Hide Modal</Text>
             </Pressable>
           </View>
         </View>
-            </Modal>
-        </View>
+    </Modal>
   );
 };
 
