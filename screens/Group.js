@@ -1,12 +1,14 @@
 import { useEffect, useState} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, BackHandler, Alert, FlatList, Modal} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, BackHandler, Alert, FlatList, Image} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import ModalCreateGroup from "../components/modalCreateGroup.js" ;
 import ModalAddGroup from "../components/modalAddGroup.js";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import UserItem from '../components/UserItem.js';
 import ResponsiveButton from '../components/ResponsiveButton.js';
 import main from '../styles/Main';
+import searchIcon from '../assets/searchIcon.png'
 
 const alert = (navigation) => {
     Alert.alert('Tem certeza que deseja sair da conta?', 'Ao sair da conta terá que efetuar login novamente.', [
@@ -85,13 +87,19 @@ export default function Group({ navigation }) {
                     <Text style={{...main.mainText, marginBottom: 10}}>Your groups</Text>
                     <View style={{...styles.containerButtons, marginBottom: 10}}>
                         <TouchableOpacity style={styles.buttons} onPress={() => setCreateGroupModalVisible(true)}>
-                            <Text>S</Text>
+                            <View style={styles.icon}>
+                                <Icon name='search' size={20}></Icon>
+                            </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.buttons}>
-                            <Text>R</Text>
+                            <View>
+                                <Icon name='pencil' size={20}></Icon>
+                            </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.buttons} onPress={() => setAddGroupModalVisible(true)}>
-                            <Text>C</Text>
+                            <View style={styles.icon}>
+                                <Icon name='plus' size={20}></Icon>
+                            </View>    
                         </TouchableOpacity>
 
                     </View>
@@ -177,7 +185,8 @@ const styles = StyleSheet.create({
         width: wp('10%'),
         padding: 10,
         backgroundColor: '#FFFFFF',
-        borderRadius: 15
+        borderRadius: 15,
+        marginLeft: 10,
     },
     group: {
         backgroundColor: '#6564D0',
@@ -199,5 +208,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         marginLeft: 2,
         marginRight: 2
+    },
+    icon: {
+        flexDirection: 'row',
+        alignItems: 'center',
     }
 })
