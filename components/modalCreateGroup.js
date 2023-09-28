@@ -1,11 +1,8 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, BackHandler, Alert, FlatList, Modal, Pressable, TextInput} from 'react-native';
+import { StyleSheet, Text, View, Alert, Modal, Pressable, TextInput} from 'react-native';
 
-import main from '../styles/Main';
 import ResponsiveButton from '../components/ResponsiveButton.js';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { BlurView } from '@react-native-community/blur';
-
 
 export default function modalCreateGroup({visible, setVisible}){    
     return (

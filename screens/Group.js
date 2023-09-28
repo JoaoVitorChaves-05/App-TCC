@@ -2,7 +2,7 @@ import { useEffect, useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, BackHandler, Alert, FlatList, Modal} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import ModalCreateGroup from "../components/modalCreateGroup.js" ;
-import modalAddGroup from "../components/modalAddGroup.js";
+import ModalAddGroup from "../components/modalAddGroup.js";
 
 import UserItem from '../components/UserItem.js';
 import ResponsiveButton from '../components/ResponsiveButton.js';
@@ -55,6 +55,7 @@ const DATA = [
 export default function Group({ navigation }) {
 
     const [createGroupModalVisible, setCreateGroupModalVisible] = useState(false);
+    const [addGroupModalVisible, setAddGroupModalVisible] = useState(false);
     useEffect(() => {
         const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
             alert(navigation)
@@ -67,6 +68,7 @@ export default function Group({ navigation }) {
     return (
         <View style={{...main.backgroundScreens, ...main.container}}>
             <ModalCreateGroup visible={createGroupModalVisible} setVisible={setCreateGroupModalVisible}/>
+            <ModalAddGroup visible={addGroupModalVisible} setVisible={setCreateGroupModalVisible}/>
             <View style={styles.header}>
                 <View style={styles.photoContainer}>
                     <View style={styles.photo}>
@@ -88,7 +90,7 @@ export default function Group({ navigation }) {
                         <TouchableOpacity style={styles.buttons}>
                             <Text>R</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.buttons}>
+                        <TouchableOpacity style={styles.buttons} onPress={() => setAddGroupModalVisible(true)}>
                             <Text>C</Text>
                         </TouchableOpacity>
 
