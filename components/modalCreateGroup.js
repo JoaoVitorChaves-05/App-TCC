@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, BackHandler, Alert, FlatList, Modal, Pressable} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, BackHandler, Alert, FlatList, Modal, Pressable, TextInput} from 'react-native';
+
+import main from '../styles/Main';
+import ResponsiveButton from '../components/ResponsiveButton.js';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { BlurView } from '@react-native-community/blur';
+
 
 export default function modalCreateGroup({visible, setVisible}){    
     return (
@@ -11,14 +17,26 @@ export default function modalCreateGroup({visible, setVisible}){
             Alert.alert('Modal has been closed');
             setVisible(!visible);
         }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setVisible(!visible)}>
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
+        <View style={styles.overlay}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <View style={styles.groupNameText}>
+                <Text style={styles.modalText}>Group Name:</Text>
+              </View>
+              <TextInput
+                style={styles.input}
+                placeholder="Group name here"
+              />
+
+              <ResponsiveButton text="Confirm" callback={() => setVisible(!visible)}/>
+
+              <Pressable
+                style={[styles.button, styles.buttonClose, {marginTop: 20}]}
+                onPress={() => setVisible(!visible)}>
+                <Text style={styles.textStyle}>Cancel</Text>
+              </Pressable>
+
+            </View>
           </View>
         </View>
     </Modal>
@@ -34,18 +52,12 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: 'rgba(52, 52, 52, 0.0)',
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    width: wp('100%'),
+    
   },
   button: {
     borderRadius: 20,
@@ -56,7 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F194FF',
   },
   buttonClose: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#FF0000',
   },
   textStyle: {
     color: 'white',
@@ -64,7 +76,30 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
+    padding: 10,
+    paddingRight: 20,
+    paddingLeft: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.70)',
+    color: 'white',
+    borderRadius: 5,
+    textAlign : 'left',
+    width: '45%'
+
   },
+  input : {
+    marginBottom: 20,
+    backgroundColor: 'white',
+    borderRadius: 5,
+    height: 50,
+    width: '100%',
+  },
+  groupNameText: {
+    width: '100%',
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Cor de fundo semi-transparente para simular o desfoque
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });

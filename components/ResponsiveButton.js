@@ -20,6 +20,6 @@ const styles = StyleSheet.create({
         borderRadius: 20
     },
     buttonText: {
-        width: wp('80%')
+        width: wp('50%')
     }
 })
