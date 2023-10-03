@@ -1,12 +1,14 @@
 import { useEffect, useState} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, BackHandler, Alert, FlatList, Modal} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, BackHandler, Alert, FlatList, Image} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import ModalCreateGroup from "../components/modalCreateGroup.js" ;
-import modalAddGroup from "../components/modalAddGroup.js";
+import ModalAddGroup from "../components/modalAddGroup.js";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import UserItem from '../components/UserItem.js';
 import ResponsiveButton from '../components/ResponsiveButton.js';
 import main from '../styles/Main';
+import searchIcon from '../assets/searchIcon.png'
 
 const alert = (navigation) => {
     Alert.alert('Tem certeza que deseja sair da conta?', 'Ao sair da conta terá que efetuar login novamente.', [
@@ -55,6 +57,8 @@ const DATA = [
 export default function Group({ navigation }) {
 
     const [createGroupModalVisible, setCreateGroupModalVisible] = useState(false);
+    const [addGroupModalVisible, setAddGroupModalVisible] = useState(false);
+    const [editMode, setEditMode] = useState(false)
     useEffect(() => {
         const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
             alert(navigation)
@@ -62,58 +66,128 @@ export default function Group({ navigation }) {
         });
 
         return () => backHandler.remove()
-    }, [navigation])
+    }, [navigation, editMode])
 
-    return (
-        <View style={{...main.backgroundScreens, ...main.container}}>
-            <ModalCreateGroup visible={createGroupModalVisible} setVisible={setCreateGroupModalVisible}/>
-            <View style={styles.header}>
-                <View style={styles.photoContainer}>
-                    <View style={styles.photo}>
-                        <View style={styles.online}></View>
+    if (!editMode) {
+        return (
+            <View style={{...main.backgroundScreens, ...main.container}}>
+                <ModalCreateGroup visible={createGroupModalVisible} setVisible={setCreateGroupModalVisible}/>
+                <ModalAddGroup visible={addGroupModalVisible} setVisible={setAddGroupModalVisible}/>
+                <View style={styles.header}>
+                    <View style={styles.photoContainer}>
+                        <View style={styles.photo}>
+                            <View style={styles.online}></View>
+                        </View>
+                        <Text style={{...main.mainText}}>Welcome, User!</Text>
                     </View>
-                    <Text style={{...main.mainText}}>Welcome, User!</Text>
+                    <TouchableOpacity style={styles.logoutButton} onPress={() => alert(navigation)}>
+                        <Text style={{textAlign: 'center'}}>Exit</Text>
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.logoutButton} onPress={() => alert(navigation)}>
-                    <Text style={{textAlign: 'center'}}>Exit</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.mainContainer}>
-                <View style={styles.mainContainerHeader}>
-                    <Text style={{...main.mainText, marginBottom: 10}}>Your groups</Text>
-                    <View style={{...styles.containerButtons, marginBottom: 10}}>
-                        <TouchableOpacity style={styles.buttons} onPress={() => setCreateGroupModalVisible(true)}>
-                            <Text>S</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.buttons}>
-                            <Text>R</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.buttons}>
-                            <Text>C</Text>
-                        </TouchableOpacity>
+                <View style={styles.mainContainer}>
+                    <View style={styles.mainContainerHeader}>
+                        <Text style={{...main.mainText, marginBottom: 10}}>Your groups</Text>
+                        <View style={{...styles.containerButtons, marginBottom: 10}}>
+                            <TouchableOpacity style={styles.buttons} onPress={() => setCreateGroupModalVisible(true)}>
+                                <View style={styles.icon}>
+                                    <Icon name='search' size={20}></Icon>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.buttons} onPress={() => setEditMode(true)}>
+                                <View>
+                                    <Icon name='pencil' size={20}></Icon>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.buttons} onPress={() => setAddGroupModalVisible(true)}>
+                                <View style={styles.icon}>
+                                    <Icon name='plus' size={20}></Icon>
+                                </View>    
+                            </TouchableOpacity>
 
+                        </View>
+                    </View>
+                    <View style={styles.group}>
+                        <Text style={{...main.title, ...styles.groupNameTitle}}>Group name</Text>
+                        <FlatList 
+                            data={DATA}
+                            renderItem={({item}) => <UserItem username={item.username} position={item.position} />}
+                            keyExtractor={item => item.id.toString()}
+                        />
+                    </View>
+                    <View style={styles.listGroups}>
+                        <View style={styles.listGroupsItem}></View>
+                        <View style={styles.listGroupsItem}></View>
+                        <View style={styles.listGroupsItem}></View>
+                    </View>
+                    <View style={{...main.form, marginTop: 20}}>
+                        <ResponsiveButton text="Exit group" callback={() => console.log('Button to exit group has been clicked') }/>
+                        <Text style={{...main.secondaryText, marginTop: 15}}>Create group</Text>
                     </View>
                 </View>
-                <View style={styles.group}>
-                    <Text style={{...main.title, ...styles.groupNameTitle}}>Group name</Text>
-                    <FlatList 
-                        data={DATA}
-                        renderItem={({item}) => <UserItem username={item.username} position={item.position} />}
-                        keyExtractor={item => item.id.toString()}
-                    />
+            </View>
+        )
+    } else {
+        return (
+            <View style={{...main.backgroundScreens, ...main.container}}>
+                <View style={styles.header}>
+                    <View style={styles.photoContainer}>
+                        <View style={styles.photo}>
+                            <View style={styles.online}></View>
+                        </View>
+                        <Text style={{...main.mainText}}>Welcome, User!</Text>
+                    </View>
+                    <TouchableOpacity style={styles.logoutButton} onPress={() => alert(navigation)}>
+                        <Text style={{textAlign: 'center'}}>Exit</Text>
+                    </TouchableOpacity>
                 </View>
-                <View style={styles.listGroups}>
-                    <View style={styles.listGroupsItem}></View>
-                    <View style={styles.listGroupsItem}></View>
-                    <View style={styles.listGroupsItem}></View>
-                </View>
-                <View style={{...main.form, marginTop: 20}}>
-                    <ResponsiveButton text="Exit group" callback={() => console.log('Button to exit group has been clicked') }/>
-                    <Text style={{...main.secondaryText, marginTop: 15}}>Create group</Text>
+                <View style={styles.mainContainer}>
+                    <View style={styles.mainContainerHeader}>
+                        <Text style={{...main.mainText, marginBottom: 10}}>Your groups</Text>
+                        <View style={{...styles.containerButtons, marginBottom: 10}}>
+                            <TouchableOpacity style={styles.buttons} onPress={() => setCreateGroupModalVisible(true)}>
+                                <View style={styles.icon}>
+                                    <Icon name='search' size={20}></Icon>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.buttons}>
+                                <View>
+                                    <Icon name='pencil' size={20}></Icon>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.buttons} onPress={() => setAddGroupModalVisible(true)}>
+                                <View style={styles.icon}>
+                                    <Icon name='plus' size={20}></Icon>
+                                </View>    
+                            </TouchableOpacity>
+
+                        </View>
+                    </View>
+                    <View style={styles.group}>
+                        <View style={styles.headerGroup}>
+                            <Text style={{...main.title, ...styles.groupNameTitle}}>Group name</Text>
+                            <View style={[styles.icon, {backgroundColor: 'white', padding: 10, marginLeft: 10, borderRadius: 15}]}>
+                                <Icon name='pencil' size={20}></Icon>
+                            </View> 
+                        </View>
+                        <FlatList 
+                            data={DATA}
+                            renderItem={({item}) => <UserItem username={item.username} position={item.position} editMode={editMode} />}
+                            keyExtractor={item => item.id.toString()}
+                        />
+                    </View>
+                    <View style={styles.listGroups}>
+                        <View style={styles.listGroupsItem}></View>
+                        <View style={styles.listGroupsItem}></View>
+                        <View style={styles.listGroupsItem}></View>
+                    </View>
+                    <View style={{...main.form, marginTop: 20}}>
+                        <ResponsiveButton text="Exit group" callback={() => console.log('Button to exit group has been clicked') }/>
+                        <Text style={{...main.secondaryText, marginTop: 15}}>Create group</Text>
+                    </View>
                 </View>
             </View>
-        </View>
-    )
+        )
+    }
 }
 
 const styles = StyleSheet.create({
@@ -175,7 +249,8 @@ const styles = StyleSheet.create({
         width: wp('10%'),
         padding: 10,
         backgroundColor: '#FFFFFF',
-        borderRadius: 15
+        borderRadius: 15,
+        marginLeft: 10,
     },
     group: {
         backgroundColor: '#6564D0',
@@ -183,6 +258,10 @@ const styles = StyleSheet.create({
         padding: 20,
         maxHeight: hp('50%'),
         width: wp('90%')
+    },
+    headerGroup: {
+        display: 'flex',
+        flexDirection: 'row'
     },
     listGroups: {
         display: 'flex',
@@ -197,5 +276,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         marginLeft: 2,
         marginRight: 2
+    },
+    icon: {
+        flexDirection: 'row',
+        alignItems: 'center',
     }
 })
