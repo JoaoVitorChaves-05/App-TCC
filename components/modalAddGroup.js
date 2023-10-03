@@ -12,7 +12,6 @@ export default function modalAddGroup({visible, setVisible}){
         transparent={true}
         visible={visible}
         onRequestClose={() => {
-            Alert.alert('Modal has been closed');
             setVisible(!visible);
         }}>
         <View style={styles.overlay}>
@@ -89,6 +88,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     height: 50,
     width: '100%',
+    padding: 15
   },
   groupNameText: {
     width: '100%',

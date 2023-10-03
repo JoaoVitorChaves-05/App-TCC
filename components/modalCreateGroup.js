@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     height: 50,
     width: '100%',
+    padding: 15
   },
   groupNameText: {
     width: '100%',
