@@ -33,7 +33,7 @@ export default function UserItem({username, position, editMode}) {
                 <View style={{...styles.userItem}}>
                     <Text style={{...main.secondaryText, textAlign: "center"}}>{position}</Text>
                 </View>
-                <View style={[{...styles.userItem}, {backgroundColor: 'white', padding: 10, marginLeft: 10, borderRadius: 15}]}>
+                <View style={[{width: wp('15%'), padding: 10, backgroundColor: '#FFFFFF', borderRadius: 15, marginLeft: 10, display: 'flex', justifyContent: 'center', alignItems: 'center'}]}>
                     <Icon name="trash" size={20}></Icon>
                 </View>
             </View>
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
         padding: 5
     },
     userItem: {
-        flex: 0.33
+        flex: 1
     },
     photo: {
         width: wp('15%'),

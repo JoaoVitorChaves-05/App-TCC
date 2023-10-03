@@ -26,6 +26,19 @@ const alert = (navigation) => {
     ])
 }
 
+const exitGroupAlert = () => {
+    Alert.alert('Tem certeza que deseja sair do grupo?', 'Ao sair do grupo não terá mais autorização, terá que solicitar novamente a entrada no grupo.', [
+        {
+            text: 'Cancelar',
+            onPress: () => console.log('Cancel button has been clicked')
+        },
+        {
+            text: 'OK',
+            onPress: () => console.log('OK button has been clicked')
+        }
+    ])
+}
+
 const DATA = [
     {
         id: 1,
@@ -93,7 +106,7 @@ export default function Group({ navigation }) {
                                     <Icon name='search' size={20}></Icon>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.buttons} onPress={() => setEditMode(true)}>
+                            <TouchableOpacity style={styles.buttons} onPress={() => setEditMode(!editMode)}>
                                 <View>
                                     <Icon name='pencil' size={20}></Icon>
                                 </View>
@@ -120,8 +133,8 @@ export default function Group({ navigation }) {
                         <View style={styles.listGroupsItem}></View>
                     </View>
                     <View style={{...main.form, marginTop: 20}}>
-                        <ResponsiveButton text="Exit group" callback={() => console.log('Button to exit group has been clicked') }/>
-                        <Text style={{...main.secondaryText, marginTop: 15}}>Create group</Text>
+                        <ResponsiveButton text="Exit group" callback={() => exitGroupAlert() }/>
+                        <Text style={{...main.secondaryText, marginTop: 15}} onPress={() => setCreateGroupModalVisible(true)}>Create group</Text>
                     </View>
                 </View>
             </View>
@@ -144,21 +157,13 @@ export default function Group({ navigation }) {
                     <View style={styles.mainContainerHeader}>
                         <Text style={{...main.mainText, marginBottom: 10}}>Your groups</Text>
                         <View style={{...styles.containerButtons, marginBottom: 10}}>
-                            <TouchableOpacity style={styles.buttons} onPress={() => setCreateGroupModalVisible(true)}>
+
+                            <TouchableOpacity style={styles.buttons} onPress={() => setEditMode(!editMode)}>
                                 <View style={styles.icon}>
-                                    <Icon name='search' size={20}></Icon>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.buttons}>
-                                <View>
                                     <Icon name='pencil' size={20}></Icon>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.buttons} onPress={() => setAddGroupModalVisible(true)}>
-                                <View style={styles.icon}>
-                                    <Icon name='plus' size={20}></Icon>
-                                </View>    
-                            </TouchableOpacity>
+
 
                         </View>
                     </View>
@@ -179,10 +184,6 @@ export default function Group({ navigation }) {
                         <View style={styles.listGroupsItem}></View>
                         <View style={styles.listGroupsItem}></View>
                         <View style={styles.listGroupsItem}></View>
-                    </View>
-                    <View style={{...main.form, marginTop: 20}}>
-                        <ResponsiveButton text="Exit group" callback={() => console.log('Button to exit group has been clicked') }/>
-                        <Text style={{...main.secondaryText, marginTop: 15}}>Create group</Text>
                     </View>
                 </View>
             </View>
