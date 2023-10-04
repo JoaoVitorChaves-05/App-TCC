@@ -1,4 +1,5 @@
-import { Text, View, StyleSheet } from "react-native"
+import { Text, View, StyleSheet, TextInput} from "react-native"
+import ResponsiveButton from "../components/ResponsiveButton.js"
 import main from "../styles/Main.js"
 
 export default function SignUp({ navigation }) {

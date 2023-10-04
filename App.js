@@ -8,6 +8,7 @@ import Home from './screens/Home.js';
 import Login from './screens/Login.js';
 import Group from './screens/Group.js';
 import UserPhoto from './screens/UserPhoto.js'
+import SignUp from './screens/SignUp.js'
 
 const Stack = createNativeStackNavigator()
 
@@ -33,6 +34,7 @@ export default function App() {
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
           <Stack.Screen name="Group" component={Group} options={{ headerShown: false }} />
+          <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
           <Stack.Screen name="UserPhoto" component={UserPhoto} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>

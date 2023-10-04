@@ -69,9 +69,11 @@ export default function Group({ navigation }) {
             <ModalCreateGroup visible={createGroupModalVisible} setVisible={setCreateGroupModalVisible}/>
             <View style={styles.header}>
                 <View style={styles.photoContainer}>
-                    <View style={styles.photo}>
-                        <View style={styles.online}></View>
-                    </View>
+                    <TouchableOpacity onPress={() => {navigation.navigate('UserPhoto')}}>
+                        <View style={styles.photo}>
+                            <View style={styles.online}></View>
+                        </View>
+                    </TouchableOpacity>
                     <Text style={{...main.mainText}}>Welcome, User!</Text>
                 </View>
                 <TouchableOpacity style={styles.logoutButton} onPress={() => alert(navigation)}>
