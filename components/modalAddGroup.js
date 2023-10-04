@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, BackHandler, Alert, FlatList, Modal, Pressable, TextInput} from 'react-native';
+import { StyleSheet, Text, View, Alert, Modal, Pressable, TextInput} from 'react-native';
 
 import ResponsiveButton from '../components/ResponsiveButton.js';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
 
 export default function modalAddGroup({visible, setVisible}){    
     return (
@@ -12,6 +11,7 @@ export default function modalAddGroup({visible, setVisible}){
         transparent={true}
         visible={visible}
         onRequestClose={() => {
+            Alert.alert('Modal has been closed');
             setVisible(!visible);
         }}>
         <View style={styles.overlay}>
@@ -22,7 +22,7 @@ export default function modalAddGroup({visible, setVisible}){
               </View>
               <TextInput
                 style={styles.input}
-                placeholder="Group Key Code here"
+                placeholder="Group key code here"
               />
 
               <ResponsiveButton text="Confirm" callback={() => setVisible(!visible)}/>
@@ -32,6 +32,7 @@ export default function modalAddGroup({visible, setVisible}){
                 onPress={() => setVisible(!visible)}>
                 <Text style={styles.textStyle}>Cancel</Text>
               </Pressable>
+
             </View>
           </View>
         </View>
