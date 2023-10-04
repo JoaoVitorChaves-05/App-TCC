@@ -72,6 +72,7 @@ export default function Group({ navigation }) {
     const [createGroupModalVisible, setCreateGroupModalVisible] = useState(false);
     const [addGroupModalVisible, setAddGroupModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false)
+    
     useEffect(() => {
         const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
             alert(navigation)
@@ -81,6 +82,17 @@ export default function Group({ navigation }) {
         return () => backHandler.remove()
     }, [navigation, editMode])
 
+    return (
+        <View style={{...main.backgroundScreens, ...main.container}}>
+            <ModalCreateGroup visible={createGroupModalVisible} setVisible={setCreateGroupModalVisible}/>
+            <View style={styles.header}>
+                <View style={styles.photoContainer}>
+                    <TouchableOpacity onPress={() => {navigation.navigate('UserPhoto')}}>
+                        <View style={styles.photo}>
+                            <View style={styles.online}></View>
+                        </View>
+                    </TouchableOpacity>
+                    <Text style={{...main.mainText}}>Welcome, User!</Text>
     if (!editMode) {
         return (
             <View style={{...main.backgroundScreens, ...main.container}}>

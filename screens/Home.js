@@ -16,10 +16,15 @@ export default function Home({ navigation }) {
             <View style={{...main.form}}>
                 <ResponsiveButton text="Enter" callback={() => navigation.navigate('Login') }/>
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <Text onPress={() => {navigation.navigate('SignUp')}}style={{...main.secondaryText, marginTop: 15}}>Sign Up</Text>
 =======
                 <Text onPress={() => {navigation.navigate('SignUp')}} style={{...main.secondaryText, marginTop: 15}}>Sign Up</Text>
 >>>>>>> userPhoto
+=======
+                <Text onPress={() => {navigation.navigate('SignUp')}} style={{...main.secondaryText, marginTop: 15}}>Sign Up</Text>
+                <Text onPress={() => {navigation.navigate('SignUp')}}style={{...main.secondaryText, marginTop: 15}}>Sign Up</Text>
+>>>>>>> 36ff0f6519d4aa844ca4993906195a83284c3a5e
             </View>
         </View>
     )
