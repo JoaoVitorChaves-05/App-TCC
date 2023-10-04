@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import { Text, View, StyleSheet, TextInput} from "react-native";
 import ResponsiveButton from '../components/ResponsiveButton.js';
 
+=======
+import { Text, View, StyleSheet, TextInput} from "react-native"
+import ResponsiveButton from "../components/ResponsiveButton.js"
+>>>>>>> userPhoto
 import main from "../styles/Main.js"
 
 export default function SignUp({ navigation }) {
@@ -33,7 +38,7 @@ export default function SignUp({ navigation }) {
                     <TextInput placeholder="Password" secureTextEntry={true} />
                 </View>
                 <View style={styles.formArea}>
-                    <ResponsiveButton text="Confirm" callback={() => navigation.navigate("Login")} />
+                    <ResponsiveButton text="Confirm" callback={() => navigation.navigate("UserPhoto")} />
                 </View>
             </View>
         </View>
