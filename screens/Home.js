@@ -15,6 +15,7 @@ export default function Home({ navigation }) {
             </View>
             <View style={{...main.form}}>
                 <ResponsiveButton text="Enter" callback={() => navigation.navigate('Login') }/>
+                <Text onPress={() => {navigation.navigate('SignUp')}} style={{...main.secondaryText, marginTop: 15}}>Sign Up</Text>
                 <Text onPress={() => {navigation.navigate('SignUp')}}style={{...main.secondaryText, marginTop: 15}}>Sign Up</Text>
             </View>
         </View>
