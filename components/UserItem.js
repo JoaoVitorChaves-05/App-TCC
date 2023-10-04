@@ -1,24 +1,45 @@
 import { StyleSheet, Text, View } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import main from "../styles/Main.js";
 
-export default function UserItem({username, position}) {
+export default function UserItem({username, position, editMode}) {
     console.log(username, position)
 
-    return (
-        <View style={styles.user}>
-            <View style={{...styles.userItem}}>
-                <View style={styles.photo}></View>
+    if (!editMode) {
+        return (
+            <View style={styles.user}>
+                <View style={{...styles.userItem}}>
+                    <View style={styles.photo}></View>
+                </View>
+                <View style={{...styles.userItem}}>
+                    <Text style={{...main.secondaryText, textAlign: "center"}}>{username}</Text>
+                </View>
+                <View style={{...styles.userItem}}>
+                    <Text style={{...main.secondaryText, textAlign: "center"}}>{position}</Text>
+                </View>
             </View>
-            <View style={{...styles.userItem}}>
-                <Text style={{...main.secondaryText, textAlign: "center"}}>{username}</Text>
+        )
+    } else {
+        return (
+            <View style={styles.user}>
+                <View style={{...styles.userItem}}>
+                    <View style={styles.photo}></View>
+                </View>
+                <View style={{...styles.userItem}}>
+                    <Text style={{...main.secondaryText, textAlign: "center"}}>{username}</Text>
+                </View>
+                <View style={{...styles.userItem}}>
+                    <Text style={{...main.secondaryText, textAlign: "center"}}>{position}</Text>
+                </View>
+                <View style={[{width: wp('15%'), padding: 10, backgroundColor: '#FFFFFF', borderRadius: 15, marginLeft: 10, display: 'flex', justifyContent: 'center', alignItems: 'center'}]}>
+                    <Icon name="trash" size={20}></Icon>
+                </View>
             </View>
-            <View style={{...styles.userItem}}>
-                <Text style={{...main.secondaryText, textAlign: "center"}}>{position}</Text>
-            </View>
-        </View>
-    )
+        )
+    }
+    
 }
 
 const styles = StyleSheet.create({
@@ -29,12 +50,15 @@ const styles = StyleSheet.create({
         padding: 5
     },
     userItem: {
-        flex: 0.33
+        flex: 1
     },
     photo: {
         width: wp('15%'),
         height: hp('7.5%'),
         backgroundColor: '#ffffff',
         borderRadius: wp('50%'),
+    },
+    userItemEditMode: {
+        flex: 0.2
     }
 })
