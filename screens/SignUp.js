@@ -31,7 +31,7 @@ export default function SignUp({ navigation }) {
                     <TextInput placeholder="Password" secureTextEntry={true} />
                 </View>
                 <View style={styles.formArea}>
-                    <ResponsiveButton text="Confirm" callback={() => navigation.navigate("Login")} />
+                    <ResponsiveButton text="Confirm" callback={() => navigation.navigate("UserPhoto")} />
                 </View>
             </View>
         </View>
