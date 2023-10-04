@@ -8,7 +8,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import UserItem from '../components/UserItem.js';
 import ResponsiveButton from '../components/ResponsiveButton.js';
 import main from '../styles/Main';
-import searchIcon from '../assets/searchIcon.png'
 
 const alert = (navigation) => {
     Alert.alert('Tem certeza que deseja sair da conta?', 'Ao sair da conta terá que efetuar login novamente.', [

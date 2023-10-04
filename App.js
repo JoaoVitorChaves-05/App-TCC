@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -8,12 +7,7 @@ import Home from './screens/Home.js';
 import Login from './screens/Login.js';
 import Group from './screens/Group.js';;
 import SignUp from './screens/SignUp.js';
-import Group from './screens/Group.js';
 import UserPhoto from './screens/UserPhoto.js'
-import SignUp from './screens/SignUp.js'
-
-import Group from './screens/Group.js';
-import SignUp from './screens/SignUp.js';
 
 const Stack = createNativeStackNavigator()
 
@@ -42,7 +36,6 @@ export default function App() {
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
           <Stack.Screen name="UserPhoto" component={UserPhoto} options={{ headerShown: false }} />
 
-          <Stack.Screen name="UserPhoto" component={UserPhoto} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     )
