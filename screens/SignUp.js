@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Text, View, StyleSheet, TextInput, Alert} from "react-native";
 import axios from "axios";
 import ResponsiveButton from '../components/ResponsiveButton.js';
@@ -6,21 +6,37 @@ import { StatusBar } from 'expo-status-bar';
 
 import main from "../styles/Main.js";
 
-const trySignUp = async ({username, email, password}, navigation) => {
+const tryNavigation = async ({username, email, password}, navigation) => {
 
-    const url = 'http://localhost:3000/user/signIn'
+    if (!(username && email && password)) return (
+        Alert.alert('Please enter all required fields', 'To continue, enter all required fields', [
+            {text: 'OK'}
+        ])
+    )
 
-    const response = await axios.post(url, {username, email, password})
+    return navigation.navigate('UserPhoto', { username: username, email: email, password: password})
+    /*
+    const url = 'http://192.168.15.21:3000/user'
+
+    const data = new FormData()
+    data.append('username', username)
+    data.append('email', email)
+    data.append('password', password)
+
+    const response = await fetch(url, { method: 'POST', body: data })
     .then((response) => response.json())
+    .then((response) => response)
+    .catch((error) => console.log(error))
 
     if (response.success)
-        return navigation.navigate('SignIn')
+        return navigation.navigate('UserPhoto')
 
     Alert.alert(response.message, [
         {
             text: 'OK'
         }
     ])
+    */
 }
 
 export default function SignUp({ navigation }) {
@@ -29,6 +45,9 @@ export default function SignUp({ navigation }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    useEffect(() => {
+
+    }, [username, email, password])
     
     return (
         <View style={{...main.backgroundScreens, ...main.container}}>
@@ -44,18 +63,18 @@ export default function SignUp({ navigation }) {
             <View style={{...main.form}}>
                 <View style={{...main.formArea}}>
                     <Text style={{...main.secondaryText}}>Username</Text>
-                    <TextInput onChange={setUsername} value={username} style={{...main.textInput, textAlign: 'center'}} placeholder="Username" />
+                    <TextInput onChangeText={setUsername} value={username} style={{...main.textInput, textAlign: 'center'}} placeholder="Username" />
                 </View>
                 <View style={{...main.formArea}}>
                     <Text style={{...main.secondaryText}}>E-mail</Text>
-                    <TextInput onChange={setEmail} value={email} style={{...main.textInput, textAlign: 'center'}} placeholder="E-mail" />
+                    <TextInput onChangeText={setEmail} value={email} style={{...main.textInput, textAlign: 'center'}} placeholder="E-mail" />
                 </View>
                 <View style={{...main.formArea}}>
                     <Text style={{...main.secondaryText}}>Password</Text>
-                    <TextInput onChange={setPassword} value={password} style={{...main.textInput, textAlign: 'center'}} placeholder="Password" secureTextEntry={true} />
+                    <TextInput onChangeText={setPassword} value={password} style={{...main.textInput, textAlign: 'center'}} placeholder="Password" secureTextEntry={true} />
                 </View>
                 <View style={{...main.formArea}}>
-                    <ResponsiveButton text="Confirm" callback={() => trySignUp({username, email, password}, navigation)} />
+                    <ResponsiveButton text="Confirm" callback={() => tryNavigation({username, email, password}, navigation)} />
                 </View>
             </View>
         </View>

@@ -6,14 +6,19 @@ import ResponsiveButton from '../components/ResponsiveButton.js';
 import main from '../styles/Main.js'
 
 const tryLogin = async ({username, password, setPassword}, navigation) => {
-    const url = 'http://localhost:3000/user/signIn'
+    const url = 'http://192.168.15.21:3000/user/signIn'
 
-    const response = await axios.post(url, { username, password })
+    const data = new FormData()
+    data.append('username', username)
+    data.append('password', password)
+
+    const response = await fetch(url, data)
     .then((response) => response.json())
+    .then((response) => response)
 
     console.log(response)
 
-    if (response.success)
+    if (response.auth)
         return navigation.navigate('Group')
     
     Alert.alert('Login is invalid', 'The username and/or password is incorrect.', [
