@@ -66,17 +66,36 @@ const DATA = [
     }
 ]
 
-export default function Group({ navigation }) {
+export default function Group({ route, navigation }) {
+
+    const token = route.params.token || null
 
     const [createGroupModalVisible, setCreateGroupModalVisible] = useState(false);
     const [addGroupModalVisible, setAddGroupModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false)
+    const [userData, setUserData] = useState()
+    const [groupData, setGroupData] = useState()
     
-    useEffect(() => {
+    useEffect(async () => {
         const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
             alert(navigation)
             return true
         });
+
+        if (!userData && !groupData) {
+            await fetch('http://192.168.15.21:3000/user?token=' + token, { method: 'GET' })
+            .then(response => response.json())
+            .then(response => {
+                setUserData(response)
+            })
+
+            await fetch('http://192.168.15.21:3000/group?token=' + token, { method: 'GET' })
+            .then(response => response.json())
+            .then(response => {
+                setGroupData(response)
+            })
+
+        }
 
         return () => backHandler.remove()
     }, [navigation, editMode])

@@ -35,7 +35,6 @@ export default function App() {
           <Stack.Screen name="Group" component={Group} options={{ headerShown: false }} />
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
           <Stack.Screen name="UserPhoto" component={UserPhoto} options={{ headerShown: false }} />
-
         </Stack.Navigator>
       </NavigationContainer>
     )
