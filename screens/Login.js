@@ -19,7 +19,7 @@ const tryLogin = async ({username, password, setPassword}, navigation) => {
     console.log(response)
 
     if (response.auth)
-        return navigation.navigate('Group')
+        return navigation.navigate('Group', {token: response.token})
     
     Alert.alert('Login is invalid', 'The username and/or password is incorrect.', [
         {
