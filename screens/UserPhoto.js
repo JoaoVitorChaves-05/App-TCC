@@ -35,7 +35,7 @@ const tryNavigate = async ({username, email, password, photo}, navigation) => {
 
     if (result.success)
         return navigation.navigate('Login')
-    return Alert.alert('Error', 'Try again later', [
+    return Alert.alert('Error', (result.message ? result.message : 'Try again later'), [
         {
             text: 'OK'
         }

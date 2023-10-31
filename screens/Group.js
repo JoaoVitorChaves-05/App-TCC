@@ -83,18 +83,20 @@ export default function Group({ route, navigation }) {
         });
 
         if (!userData && !groupData) {
+            
             await fetch('http://192.168.15.21:3000/user?token=' + token, { method: 'GET' })
             .then(response => response.json())
             .then(response => {
                 setUserData(response)
             })
+            .catch(err => console.log(err))
 
             await fetch('http://192.168.15.21:3000/group?token=' + token, { method: 'GET' })
             .then(response => response.json())
             .then(response => {
                 setGroupData(response)
             })
-
+            .catch(err => console.log(err))
         }
 
         return () => backHandler.remove()

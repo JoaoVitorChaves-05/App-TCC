@@ -15,28 +15,7 @@ const tryNavigation = async ({username, email, password}, navigation) => {
     )
 
     return navigation.navigate('UserPhoto', { username: username, email: email, password: password})
-    /*
-    const url = 'http://192.168.15.21:3000/user'
 
-    const data = new FormData()
-    data.append('username', username)
-    data.append('email', email)
-    data.append('password', password)
-
-    const response = await fetch(url, { method: 'POST', body: data })
-    .then((response) => response.json())
-    .then((response) => response)
-    .catch((error) => console.log(error))
-
-    if (response.success)
-        return navigation.navigate('UserPhoto')
-
-    Alert.alert(response.message, [
-        {
-            text: 'OK'
-        }
-    ])
-    */
 }
 
 export default function SignUp({ navigation }) {
