@@ -260,17 +260,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         width: wp('90%'),
-        height: 20,
-        backgroundColor: 'blue',
+        height: 40,
     },
     nextGroupButton: {
         width: '15%',
         height: '100%',
-        backgroundColor: 'red',
+        backgroundColor: '#3D45F5',
     },
     previousGroupButton: {
         width: '15%',
         height: '100%',
-        backgroundColor: 'green',
+        backgroundColor: '#3D45F5',
     }
 })
