@@ -5,6 +5,18 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { StatusBar } from 'expo-status-bar';
 import main from "../styles/Main.js";
 
+const tryNavigation = async ({username, email, password}, navigation) => {
+
+    if (!(username && email && password)) return (
+        Alert.alert('Please enter all required fields', 'To continue, enter all required fields', [
+            {text: 'OK'}
+        ])
+    )
+
+    return navigation.navigate('UserPhoto', { username: username, email: email, password: password})
+
+}
+
 export default function SignUp({ navigation }) {
   console.log({ ...main.backgroundScreens });
   return (
