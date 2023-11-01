@@ -66,7 +66,8 @@ export default function Group({ route, navigation }) {
             return true
         });
 
-        if (!userData && !groupData) {
+        async function fetchData() {
+            if (!userData && !groupData) {
             
             await fetch('http://192.168.18.146:3000/user?token=' + token, { method: 'GET' })
             .then(response => response.json())
@@ -82,6 +83,8 @@ export default function Group({ route, navigation }) {
             })
             .catch(err => console.log(err))
         }
+
+        fetchData()
 
         return () => backHandler.remove()
     }, [navigation])
