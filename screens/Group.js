@@ -1,13 +1,13 @@
-import { useEffect, useState} from 'react';
+import { useEffect, useState, useRef} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, BackHandler, Alert, FlatList, Image} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import ModalCreateGroup from "../components/modalCreateGroup.js" ;
 import ModalAddGroup from "../components/modalAddGroup.js";
 import Icon from 'react-native-vector-icons/FontAwesome';
-
-import UserItem from '../components/UserItem.js';
 import ResponsiveButton from '../components/ResponsiveButton.js';
 import main from '../styles/Main';
+import UserItem from '../components/UserItem.js'
+
 
 const alert = (navigation) => {
     Alert.alert('Tem certeza que deseja sair da conta?', 'Ao sair da conta terá que efetuar login novamente.', [
@@ -55,30 +55,32 @@ const DATA = [
 
 export default function Group({ route, navigation }) {
 
-    const token = route.params.token || null
+    const token = route.params ? route.params.token : null;
 
     const [createGroupModalVisible, setCreateGroupModalVisible] = useState(false);
     const [addGroupModalVisible, setAddGroupModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
     useEffect(async () => {
-        const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
+        const backHandler = await BackHandler.addEventListener("hardwareBackPress", () => {
             alert(navigation)
             return true
         });
 
         if (!userData && !groupData) {
-            await fetch('http://192.168.15.21:3000/user?token=' + token, { method: 'GET' })
+            
+            await fetch('http://192.168.18.146:3000/user?token=' + token, { method: 'GET' })
             .then(response => response.json())
             .then(response => {
                 setUserData(response)
             })
+            .catch(err => console.log(err))
 
-            await fetch('http://192.168.15.21:3000/group?token=' + token, { method: 'GET' })
+            await fetch('http://192.168.18.146:3000/group?token=' + token, { method: 'GET' })
             .then(response => response.json())
             .then(response => {
                 setGroupData(response)
             })
-
+            .catch(err => console.log(err))
         }
 
         return () => backHandler.remove()
@@ -140,11 +142,19 @@ export default function Group({ route, navigation }) {
                         keyExtractor={item => item.id.toString()}
                     />
                 </View>
-                <View style={styles.listGroups}>
-                    <View style={styles.listGroupsItem}></View>
-                    <View style={styles.listGroupsItem}></View>
-                    <View style={styles.listGroupsItem}></View>
+                <View style={styles.groupControler}>
+                    <TouchableOpacity onPress={() => { console.log("anterior!")}} style={styles.previousGroupButton}>
+                        <Image style={styles.previousIcon} source={require('../assets/previousIcon.png')}></Image>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => { console.log("próximo!")}} style={styles.nextGroupButton}>
+                    <Image style={styles.nextIcon} source={require('../assets/nextIcon.png')}></Image>
+                    </TouchableOpacity>
                 </View>
+                <View>
+
+                </View>
+                
                 <View style={{...main.form, marginTop: 20}}>
                     <ResponsiveButton text="Exit group" callback={() => console.log('Button to exit group has been clicked') }/>
                     <TouchableOpacity onPress={() => setAddGroupModalVisible(true)}>
@@ -169,7 +179,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: wp('100%')
+        width: wp('100%'),
     },
     groupNameTitle: {
         fontSize: 20,
@@ -232,7 +242,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
-        marginTop: 10
+        marginTop: 10,
     },
     listGroupsItem: {
         height: 10,
@@ -245,5 +255,38 @@ const styles = StyleSheet.create({
     icon: {
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    groupControler: {
+        marginTop: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        width: wp('90%'),
+        height: 35,
+    },
+    nextGroupButton: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '15%',
+        height: '100%',
+        backgroundColor: '#3D45F5',
+        borderRadius: 15,
+    },
+    previousGroupButton: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '15%',
+        height: '100%',
+        backgroundColor: 'white',
+        borderRadius: 15,
+    },
+    previousIcon: {
+        height: 20,
+        width: 20,
+    },
+    nextIcon: {
+        height: 20,
+        width: 20
     }
 })
