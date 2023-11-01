@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, BackHandler, Alert, FlatList} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, BackHandler, Alert, FlatList, Image} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import ModalCreateGroup from "../components/modalCreateGroup.js" ;
 import ModalAddGroup from "../components/modalAddGroup.js";
@@ -144,10 +144,11 @@ export default function Group({ route, navigation }) {
                 </View>
                 <View style={styles.groupControler}>
                     <TouchableOpacity onPress={() => { console.log("anterior!")}} style={styles.previousGroupButton}>
+                        <Image style={styles.previousIcon} source={require('../assets/previousIcon.png')}></Image>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => { console.log("próximo!")}} style={styles.nextGroupButton}>
-
+                    <Image style={styles.nextIcon} source={require('../assets/nextIcon.png')}></Image>
                     </TouchableOpacity>
                 </View>
                 <View>
@@ -178,7 +179,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: wp('100%')
+        width: wp('100%'),
     },
     groupNameTitle: {
         fontSize: 20,
@@ -260,16 +261,32 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         width: wp('90%'),
-        height: 40,
+        height: 35,
     },
     nextGroupButton: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         width: '15%',
         height: '100%',
         backgroundColor: '#3D45F5',
+        borderRadius: 15,
     },
     previousGroupButton: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         width: '15%',
         height: '100%',
-        backgroundColor: '#3D45F5',
+        backgroundColor: 'white',
+        borderRadius: 15,
+    },
+    previousIcon: {
+        height: 20,
+        width: 20,
+    },
+    nextIcon: {
+        height: 20,
+        width: 20
     }
 })
