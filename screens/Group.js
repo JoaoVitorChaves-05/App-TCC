@@ -73,8 +73,8 @@ export default function Group({ route, navigation }) {
     const [createGroupModalVisible, setCreateGroupModalVisible] = useState(false);
     const [addGroupModalVisible, setAddGroupModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false)
-    const [userData, setUserData] = useState()
-    const [groupData, setGroupData] = useState()
+    const [userData, setUserData] = useState(null)
+    const [groupData, setGroupData] = useState(null)
     
     useEffect(async () => {
         const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
