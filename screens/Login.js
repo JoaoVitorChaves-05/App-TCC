@@ -6,7 +6,7 @@ import ResponsiveButton from '../components/ResponsiveButton.js';
 import main from '../styles/Main.js'
 
 const tryLogin = async ({username, password, setPassword}, navigation) => {
-    const url = 'http://192.168.15.21:3000/user/signIn'
+    const url = 'http://192.168.18.146:3000/user/signIn'
 
     const data = new FormData()
     data.append('username', username)
