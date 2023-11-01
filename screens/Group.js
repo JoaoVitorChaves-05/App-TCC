@@ -60,8 +60,11 @@ export default function Group({ route, navigation }) {
     const [createGroupModalVisible, setCreateGroupModalVisible] = useState(false);
     const [addGroupModalVisible, setAddGroupModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
-    useEffect(async () => {
-        const backHandler = await BackHandler.addEventListener("hardwareBackPress", () => {
+    const [userData, setUserData] = useState(null);
+    const [groupData, setGroupData] = useState(null);
+
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
             alert(navigation)
             return true
         });
@@ -69,25 +72,27 @@ export default function Group({ route, navigation }) {
         async function fetchData() {
             if (!userData && !groupData) {
             
-            await fetch('http://192.168.18.146:3000/user?token=' + token, { method: 'GET' })
-            .then(response => response.json())
-            .then(response => {
-                setUserData(response)
-            })
-            .catch(err => console.log(err))
+                await fetch('http://192.168.18.146:3000/user?token=' + token, { method: 'GET' })
+                .then(response => response.json())
+                .then(response => {
+                    setUserData(response)
+                })
+                .catch(err => console.log(err))
 
-            await fetch('http://192.168.18.146:3000/group?token=' + token, { method: 'GET' })
-            .then(response => response.json())
-            .then(response => {
-                setGroupData(response)
-            })
-            .catch(err => console.log(err))
+                await fetch('http://192.168.18.146:3000/group?token=' + token, { method: 'GET' })
+                .then(response => response.json())
+                .then(response => {
+                    setGroupData(response)
+                })
+                .catch(err => console.log(err))
+
+            }
         }
 
         fetchData()
 
         return () => backHandler.remove()
-    }, [navigation])
+    }, [navigation, editMode])
 
     const renderContent = () => {
       if(!editMode){
@@ -102,74 +107,114 @@ export default function Group({ route, navigation }) {
 
     }
 
-    return (
-        <View style={{...main.backgroundScreens, ...main.container}}>
-            <ModalCreateGroup visible={createGroupModalVisible} setVisible={setCreateGroupModalVisible}/>
-            <ModalAddGroup visible={addGroupModalVisible} setVisible={setAddGroupModalVisible}/>
-            <View style={styles.header}>
-                <View style={styles.photoContainer}>
-                  <TouchableOpacity onPress={() => {navigation.navigate('UserPhoto')}}>
-                    <View style={styles.photo}>
-                        <View style={styles.online}></View>
+    if (!editMode) {
+        return (
+            <View style={{...main.backgroundScreens, ...main.container}}>
+                <ModalCreateGroup visible={createGroupModalVisible} setVisible={setCreateGroupModalVisible}/>
+                <ModalAddGroup visible={addGroupModalVisible} setVisible={setAddGroupModalVisible}/>
+                <View style={styles.header}>
+                    <View style={styles.photoContainer}>
+                        <View style={styles.photo}>
+                            <View style={styles.online}></View>
+                        </View>
+                        <Text style={{...main.mainText}}>Welcome, User!</Text>
                     </View>
-                  </TouchableOpacity>
-                    <Text style={{...main.mainText}}>Welcome, User!</Text>
+                    <TouchableOpacity style={styles.logoutButton} onPress={() => alert(navigation)}>
+                        <Text style={{textAlign: 'center'}}>Exit</Text>
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.logoutButton} onPress={() => alert(navigation)}>
-                    <Text style={{textAlign: 'center'}}>Exit</Text>
-                </TouchableOpacity>
+                <View style={styles.mainContainer}>
+                    <View style={styles.mainContainerHeader}>
+                        <Text style={{...main.mainText, marginBottom: 10}}>Your groups</Text>
+                        <View style={{...styles.containerButtons, marginBottom: 10}}>
+                            <TouchableOpacity style={styles.buttons} onPress={() => setCreateGroupModalVisible(true)}>
+                                <View style={styles.icon}>
+                                    <Icon name='search' size={20}></Icon>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.buttons} onPress={() => setEditMode(!editMode)}>
+                                <View>
+                                    <Icon name='pencil' size={20}></Icon>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.buttons} onPress={() => setAddGroupModalVisible(true)}>
+                                <View style={styles.icon}>
+                                    <Icon name='plus' size={20}></Icon>
+                                </View>    
+                            </TouchableOpacity>
+
+                        </View>
+                    </View>
+                    <View style={styles.group}>
+                        <Text style={{...main.title, ...styles.groupNameTitle}}>Group name</Text>
+                        <FlatList 
+                            data={DATA}
+                            renderItem={({item}) => <UserItem username={item.username} position={item.position} />}
+                            keyExtractor={item => item.id.toString()}
+                        />
+                    </View>
+                    <View style={styles.listGroups}>
+                        <View style={styles.listGroupsItem}></View>
+                        <View style={styles.listGroupsItem}></View>
+                        <View style={styles.listGroupsItem}></View>
+                    </View>
+                    <View style={{...main.form, marginTop: 20}}>
+                        <ResponsiveButton text="Exit group" callback={() => exitGroupAlert() }/>
+                        <Text style={{...main.secondaryText, marginTop: 15}} onPress={() => setCreateGroupModalVisible(true)}>Create group</Text>
+                    </View>
+                </View>
             </View>
-            <View style={styles.mainContainer}>
-                <View style={styles.mainContainerHeader}>
-                    <Text style={{...main.mainText, marginBottom: 10}}>Your groups</Text>
-                    <View style={{...styles.containerButtons, marginBottom: 10}}>
-                        
-                        <TouchableOpacity style={styles.buttons} onPress={() => {setEditMode(!editMode)}}>
-                            <View>
+        )
+    } else {
+        return (
+            <View style={{...main.backgroundScreens, ...main.container}}>
+                <View style={styles.header}>
+                    <View style={styles.photoContainer}>
+                        <View style={styles.photo}>
+                            <View style={styles.online}></View>
+                        </View>
+                        <Text style={{...main.mainText}}>Welcome, User!</Text>
+                    </View>
+                    <TouchableOpacity style={styles.logoutButton} onPress={() => alert(navigation)}>
+                        <Text style={{textAlign: 'center'}}>Exit</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.mainContainer}>
+                    <View style={styles.mainContainerHeader}>
+                        <Text style={{...main.mainText, marginBottom: 10}}>Your groups</Text>
+                        <View style={{...styles.containerButtons, marginBottom: 10}}>
+
+                            <TouchableOpacity style={styles.buttons} onPress={() => setEditMode(!editMode)}>
+                                <View style={styles.icon}>
+                                    <Icon name='pencil' size={20}></Icon>
+                                </View>
+                            </TouchableOpacity>
+
+
+                        </View>
+                    </View>
+                    <View style={styles.group}>
+                        <View style={styles.headerGroup}>
+                            <Text style={{...main.title, ...styles.groupNameTitle}}>Group name</Text>
+                            <View style={[styles.icon, {backgroundColor: 'white', padding: 10, marginLeft: 10, borderRadius: 15}]}>
                                 <Icon name='pencil' size={20}></Icon>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.buttons} onPress={() => setAddGroupModalVisible(true)}>
-                            <View style={styles.icon}>
-                                <Icon name='plus' size={20}></Icon>
-                            </View>    
-                        </TouchableOpacity>
-
+                            </View> 
+                        </View>
+                        <FlatList 
+                            data={DATA}
+                            renderItem={({item}) => <UserItem username={item.username} position={item.position} editMode={editMode} />}
+                            keyExtractor={item => item.id.toString()}
+                        />
+                    </View>
+                    <View style={styles.listGroups}>
+                        <View style={styles.listGroupsItem}></View>
+                        <View style={styles.listGroupsItem}></View>
+                        <View style={styles.listGroupsItem}></View>
                     </View>
                 </View>
-                <View style={styles.group}>
-                    <Text style={{...main.title, ...styles.groupNameTitle}}>Group name</Text>
-                    <FlatList 
-                        data={DATA}
-                        renderItem={({item}) => <UserItem username={item.username} position={item.position} />}
-                        keyExtractor={item => item.id.toString()}
-                    />
-                </View>
-                <View style={styles.groupControler}>
-                    <TouchableOpacity onPress={() => { console.log("anterior!")}} style={styles.previousGroupButton}>
-                        <Image style={styles.previousIcon} source={require('../assets/previousIcon.png')}></Image>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => { console.log("próximo!")}} style={styles.nextGroupButton}>
-                    <Image style={styles.nextIcon} source={require('../assets/nextIcon.png')}></Image>
-                    </TouchableOpacity>
-                </View>
-                <View>
-
-                </View>
-                
-                <View style={{...main.form, marginTop: 20}}>
-                    <ResponsiveButton text="Exit group" callback={() => console.log('Button to exit group has been clicked') }/>
-                    <TouchableOpacity onPress={() => setAddGroupModalVisible(true)}>
-                      <Text style={{...main.secondaryText, marginTop: 15}}>Create group</Text>
-                    </TouchableOpacity>
-                </View>
-                <View>
-                  {renderContent()}
-                </View>
             </View>
-        </View>
-    )
+        )
+    }
 }
 
 const styles = StyleSheet.create({
