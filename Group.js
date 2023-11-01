@@ -222,7 +222,7 @@ export default function Group({ route, navigation }) {
 
 const styles = StyleSheet.create({
     header: {
-        position: 'absolute',
+        position: 'relative',
         top: hp('5%'),
         paddingLeft: wp('5%'),
         paddingRight: wp('5%'),
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
     mainContainer: {
         display: 'flex',
         flexDirection: 'column',
-        marginTop: hp('10%'),
+        marginTop: hp('5%'),
     },
     mainContainerHeader: {
         display: 'flex',
