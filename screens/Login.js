@@ -6,13 +6,9 @@ import ResponsiveButton from '../components/ResponsiveButton.js';
 import main from '../styles/Main.js'
 
 const tryLogin = async ({username, password, setPassword}, navigation) => {
-    const url = 'http://192.168.15.21:3000/user/signIn'
+    const url = 'http://192.168.18.146:3000/user/signIn'
 
-    const data = new FormData()
-    data.append('username', username)
-    data.append('password', password)
-
-    const response = await fetch(url, data)
+    const response = await fetch(url, { method: 'POST', body: JSON.stringify({username, password}), headers: {'Content-Type': 'application/json'} }) 
     .then((response) => response.json())
     .then((response) => response)
 
@@ -49,11 +45,11 @@ export default function Login ({ navigation }) {
             <View style={{...main.form}}>
                 <View style={{...main.formArea}}>
                     <Text style={{...main.secondaryText}}>Username</Text>
-                    <TextInput onChange={setUsername} value={username} style={{...main.textInput, textAlign: 'center'}} placeholder="Username" />
+                    <TextInput onChangeText={setUsername} value={username} style={{...main.textInput, textAlign: 'center'}} placeholder="Username" />
                 </View>
                 <View style={{...main.formArea}}>
                     <Text style={{...main.secondaryText}}>Password</Text>
-                    <TextInput onChange={setPassword} value={password} style={{...main.textInput, textAlign: 'center'}} placeholder="Password" secureTextEntry={true} />
+                    <TextInput onChangeText={setPassword} value={password} style={{...main.textInput, textAlign: 'center'}} placeholder="Password" secureTextEntry={true} />
                 </View>
                 <View style={{...main.formArea}}>
                     <ResponsiveButton text="Confirm" callback={() => tryLogin({username, password, setPassword}, navigation)}/>
