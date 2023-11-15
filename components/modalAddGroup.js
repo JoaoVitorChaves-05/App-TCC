@@ -3,17 +3,33 @@ import { StyleSheet, Text, View, Alert, Modal, Pressable, TextInput} from 'react
 
 import ResponsiveButton from '../components/ResponsiveButton.js';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import getIPAddress from './getIPAddress.js';
 
-export default function modalAddGroup({visible, setVisible}){    
-    return (
+export default function modalAddGroup({setNeedFetch, visible, setVisible}){
+
+  const [key, setKey] = useState('')
+
+  async function enterGroup() {
+    const result = await fetch(`http://${getIPAddress()}/key`, {method: 'POST', body: JSON.stringify({token, key}), headers: {'Content-Type': 'application/json'}})
+    .then(res => res.json())
+    .catch(err => console.log(err))
+
+    if (result.status) {
+      setNeedFetch(true)
+    }
+
+    setVisible(false)
+  }
+
+  return (
     <Modal
-        animationType="slide"
-        transparent={true}
-        visible={visible}
-        onRequestClose={() => {
-            Alert.alert('Modal has been closed');
-            setVisible(!visible);
-        }}>
+      animationType="slide"
+      transparent={true}
+      visible={visible}
+      onRequestClose={() => {
+          Alert.alert('Modal has been closed');
+          setVisible(!visible);
+      }}>
         <View style={styles.overlay}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
@@ -23,9 +39,11 @@ export default function modalAddGroup({visible, setVisible}){
               <TextInput
                 style={styles.input}
                 placeholder="Group key code here"
+                onChangeText={setKey}
+                value={key}
               />
 
-              <ResponsiveButton text="Confirm" callback={() => setVisible(!visible)}/>
+              <ResponsiveButton text="Confirm" callback={() => enterGroup()}/>
 
               <Pressable
                 style={[styles.button, styles.buttonClose, {marginTop: 20}]}
@@ -37,8 +55,8 @@ export default function modalAddGroup({visible, setVisible}){
           </View>
         </View>
     </Modal>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   centeredView: {

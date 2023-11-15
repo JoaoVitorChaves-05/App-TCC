@@ -4,9 +4,10 @@ import { useState } from 'react';
 import axios from 'axios';
 import ResponsiveButton from '../components/ResponsiveButton.js';
 import main from '../styles/Main.js'
+import getIPAddress from '../components/getIPAddress.js';
 
 const tryLogin = async ({username, password, setPassword}, navigation) => {
-    const url = 'http://192.168.18.146:3000/user/signIn'
+    const url = `http://${getIPAddress()}:3000/user/signIn`
 
     const response = await fetch(url, { method: 'POST', body: JSON.stringify({username, password}), headers: {'Content-Type': 'application/json'} }) 
     .then((response) => response.json())

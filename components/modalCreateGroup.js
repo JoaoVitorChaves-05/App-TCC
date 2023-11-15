@@ -3,9 +3,25 @@ import { StyleSheet, Text, View, Alert, Modal, Pressable, TextInput} from 'react
 
 import ResponsiveButton from '../components/ResponsiveButton.js';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import getIPAddress from './getIPAddress.js';
 
-export default function modalCreateGroup({visible, setVisible}){    
-    return (
+export default function modalCreateGroup({needFecth, setNeedFetch, visible, setVisible, token}){
+
+  const [groupName, setGroupName] = useState('')
+
+  async function createGroup() {
+    const result = await fetch(`http://${getIPAddress()}:3000/group`, {method: 'POST', body: JSON.stringify({group_name: groupName, token: token}), headers: {'Content-Type': 'application/json'}})
+    .then(res => res.json())
+    .catch(err => console.log(err))
+
+    if (result.status) {
+      setNeedFetch(true)
+    }
+
+    setVisible(false)
+  }
+
+  return (
     <Modal
         animationType="slide"
         transparent={true}
@@ -23,9 +39,11 @@ export default function modalCreateGroup({visible, setVisible}){
               <TextInput
                 style={styles.input}
                 placeholder="Group name here"
+                value={groupName}
+                onChangeText={setGroupName}
               />
 
-              <ResponsiveButton text="Confirm" callback={() => setVisible(!visible)}/>
+              <ResponsiveButton text="Confirm" callback={() => createGroup()}/>
 
               <Pressable
                 style={[styles.button, styles.buttonClose, {marginTop: 20}]}
@@ -37,8 +55,8 @@ export default function modalCreateGroup({visible, setVisible}){
           </View>
         </View>
     </Modal>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   centeredView: {

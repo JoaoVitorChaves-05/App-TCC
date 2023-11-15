@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { useEffect, useRef, useState } from 'react';
 import { Camera, CameraType } from 'expo-camera'
 import * as MediaLibrary from 'expo-media-library'
+import getIPAddress from '../components/getIPAddress.js';
 
 const tryNavigate = async ({username, email, password, photo}, navigation) => {
     if (!photo) return (
@@ -14,7 +15,7 @@ const tryNavigate = async ({username, email, password, photo}, navigation) => {
         ])
     )
 
-    const url = 'http://192.168.15.21:3000/user'
+    const url = `http://${getIPAddress()}:3000/user`
 
     const asset = await MediaLibrary.createAssetAsync(photo.uri)
 

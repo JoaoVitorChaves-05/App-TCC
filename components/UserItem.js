@@ -4,8 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import main from "../styles/Main.js";
 
-export default function UserItem({username, position, editMode}) {
-    console.log(username, position)
+export default function UserItem({username, isAdmin, editMode}) {
 
     if (!editMode) {
         return (
@@ -17,7 +16,7 @@ export default function UserItem({username, position, editMode}) {
                     <Text style={{...main.secondaryText, textAlign: "center"}}>{username}</Text>
                 </View>
                 <View style={{...styles.userItem}}>
-                    <Text style={{...main.secondaryText, textAlign: "center"}}>{position}</Text>
+                    <Text style={{...main.secondaryText, textAlign: "center"}}>{isAdmin ? 'Admin' : 'Authorized '}</Text>
                 </View>
             </View>
         )
@@ -31,7 +30,7 @@ export default function UserItem({username, position, editMode}) {
                     <Text style={{...main.secondaryText, textAlign: "center"}}>{username}</Text>
                 </View>
                 <View style={{...styles.userItem}}>
-                    <Text style={{...main.secondaryText, textAlign: "center"}}>{position}</Text>
+                    <Text style={{...main.secondaryText, textAlign: "center"}}>{isAdmin ? 'Admin' : 'Authorized '}</Text>
                 </View>
                 <View style={[{width: wp('15%'), padding: 10, backgroundColor: '#FFFFFF', borderRadius: 15, marginLeft: 10, display: 'flex', justifyContent: 'center', alignItems: 'center'}]}>
                     <Icon name="trash" size={20}></Icon>
