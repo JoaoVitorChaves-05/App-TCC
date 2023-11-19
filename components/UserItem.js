@@ -1,10 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
 import main from "../styles/Main.js";
+import modalEditUsers from "./modalEditUsers.js";
+import { useState } from "react";
 
-export default function UserItem({username, isAdmin, editMode}) {
+export default function UserItem({token, currentGroup, setCurrentGroup, username, user_id, isAdmin, editMode, userProfileId}) {
+
+    const [visible, setVisible] = useState(false)
 
     if (!editMode) {
         return (
@@ -21,8 +24,9 @@ export default function UserItem({username, isAdmin, editMode}) {
             </View>
         )
     } else {
-        return (
+        return userProfileId != user_id ? (
             <View style={styles.user}>
+                <modalEditUsers token={token} currentGroup={currentGroup} setCurrentGroup={setCurrentGroup} currentPermission={isAdmin} user_id={user_id} visible={visible} setVisible={setVisible} />
                 <View style={{...styles.userItem}}>
                     <View style={styles.photo}></View>
                 </View>
@@ -33,7 +37,19 @@ export default function UserItem({username, isAdmin, editMode}) {
                     <Text style={{...main.secondaryText, textAlign: "center"}}>{isAdmin ? 'Admin' : 'Authorized '}</Text>
                 </View>
                 <View style={[{width: wp('15%'), padding: 10, backgroundColor: '#FFFFFF', borderRadius: 15, marginLeft: 10, display: 'flex', justifyContent: 'center', alignItems: 'center'}]}>
-                    <Icon name="trash" size={20}></Icon>
+                    <Icon name="gear" size={20}></Icon>
+                </View>
+            </View>
+        ) : (
+            <View style={styles.user}>
+                <View style={{...styles.userItem}}>
+                    <View style={styles.photo}></View>
+                </View>
+                <View style={{...styles.userItem}}>
+                    <Text style={{...main.secondaryText, textAlign: "center"}}>{username}</Text>
+                </View>
+                <View style={{...styles.userItem}}>
+                    <Text style={{...main.secondaryText, textAlign: "center"}}>{isAdmin ? 'Admin' : 'Authorized '}</Text>
                 </View>
             </View>
         )
