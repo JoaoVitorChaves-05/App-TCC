@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import main from "../styles/Main.js";
-import modalEditUsers from "./modalEditUsers.js";
+import ModalEditUsers from "./modalEditUsers.js";
 import { useState } from "react";
 
-export default function UserItem({token, currentGroup, setCurrentGroup, username, user_id, isAdmin, editMode, userProfileId}) {
+export default function UserItem({token, currentGroup, setCurrentGroup, username, user_id, isAdmin, editMode, userProfileId, setNeedFetch}) {
 
     const [visible, setVisible] = useState(false)
 
@@ -26,7 +26,7 @@ export default function UserItem({token, currentGroup, setCurrentGroup, username
     } else {
         return userProfileId != user_id ? (
             <View style={styles.user}>
-                <modalEditUsers token={token} currentGroup={currentGroup} setCurrentGroup={setCurrentGroup} currentPermission={isAdmin} user_id={user_id} visible={visible} setVisible={setVisible} />
+                <ModalEditUsers token={token} currentGroup={currentGroup} setCurrentGroup={setCurrentGroup} currentPermission={isAdmin} user_id={user_id} visible={visible} setVisible={setVisible} setNeedFetch={setNeedFetch} />
                 <View style={{...styles.userItem}}>
                     <View style={styles.photo}></View>
                 </View>
@@ -36,9 +36,9 @@ export default function UserItem({token, currentGroup, setCurrentGroup, username
                 <View style={{...styles.userItem}}>
                     <Text style={{...main.secondaryText, textAlign: "center"}}>{isAdmin ? 'Admin' : 'Authorized '}</Text>
                 </View>
-                <View style={[{width: wp('15%'), padding: 10, backgroundColor: '#FFFFFF', borderRadius: 15, marginLeft: 10, display: 'flex', justifyContent: 'center', alignItems: 'center'}]}>
+                <TouchableOpacity onPress={() => setVisible(!visible)} style={[{width: wp('15%'), padding: 10, backgroundColor: '#FFFFFF', borderRadius: 15, marginLeft: 10, display: 'flex', justifyContent: 'center', alignItems: 'center'}]}>
                     <Icon name="gear" size={20}></Icon>
-                </View>
+                </TouchableOpacity>
             </View>
         ) : (
             <View style={styles.user}>

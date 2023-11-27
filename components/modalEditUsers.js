@@ -1,18 +1,20 @@
-import getIPAddress from "./getIPAddress"
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import React, {useState} from 'react';
+import { StyleSheet, Text, View, Alert, Modal, Pressable, TouchableOpacity} from 'react-native';
+
+import ResponsiveButton from '../components/ResponsiveButton.js';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Ionicons } from '@expo/vector-icons' // Certifique-se de ter instalado este pacote para utilizar os ícones
+import getIPAddress from './getIPAddress.js';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 
-export default function modalEditUsers({token, currentGroup, setCurrentGroup, currentPermission, user_id, visible, setVisible, setNeedFetch}) {
+export default function ModalEditUsers({token, currentGroup, setCurrentGroup, currentPermission, user_id, visible, setVisible, setNeedFetch}) {
     
-    const [isAdmin, setIsAdmin] = setIsAdmin(currentPermission)
+    const [isAdmin, setIsAdmin] = useState(currentPermission)
     
     const updateUserPermissions = async () => {
         const result = await fetch(`http://${getIPAddress()}:3000/group/user`, {
             method: 'PUT', 
-            body: JSON.stringify({token, user_id, group_id: currentGroup.group_id, changeToAdmin}),
+            body: JSON.stringify({token, user_id, group_id: currentGroup.group_id, changeToAdmin: isAdmin}),
             headers: {'Content-Type': 'application/json'}
         })
         .then(res => res.json())
@@ -33,9 +35,9 @@ export default function modalEditUsers({token, currentGroup, setCurrentGroup, cu
     }
 
     const removeUserPermissions = async () => {
-        const result = await fetch(`http://${getIPAddress()}/group/user`, {
+        const result = await fetch(`http://${getIPAddress()}:3000/group/user`, {
             method: 'DELETE',
-            body: JSON.stringify({token, user_id, group_id: currentGroup.group_id}),
+            body: JSON.stringify({token, user_to_remove_id: user_id, group_id: currentGroup.group_id}),
             headers: {'Content-Type': 'application/json'}
         }).then(res => res.json())
         .catch(err => console.log(err))
@@ -67,15 +69,15 @@ export default function modalEditUsers({token, currentGroup, setCurrentGroup, cu
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                         <View style={styles.groupNameText}>
-                            <Text style={styles.modalText}>Group Name:</Text>
+                            <Text style={styles.modalText}>Permissions:</Text>
                         </View>
-                        <TouchableOpacity onPress={() => setIsAdmin(!isAdmin)}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={{ marginLeft: 8 }}>Admin:</Text>
+                        <TouchableOpacity style={styles.checkBox} onPress={() => setIsAdmin(!isAdmin)}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                                <Text style={{ marginLeft: 8, color: 'white', fontSize: 32}}>Admin: </Text>
                                 <Ionicons
                                     name={isAdmin ? 'checkbox-outline' : 'square-outline'}
-                                    size={24}
-                                    color={isAdmin ? 'green' : 'black'}
+                                    size={32}
+                                    color={'white'}
                                 />
                             </View>
                         </TouchableOpacity>
@@ -135,8 +137,9 @@ const styles = StyleSheet.create({
         color: 'white',
         borderRadius: 5,
         textAlign : 'left',
-        width: '45%'
-
+        width: '100%',
+        textAlign: 'center',
+        fontSize: 38
     },
     input : {
         marginBottom: 20,
@@ -154,5 +157,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)', // Cor de fundo semi-transparente para simular o desfoque
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    checkBox: {
+        backgroundColor: '#6564D0',
+        padding: 10, 
+        borderRadius: 20, 
+        margin: 10 
     }
 })

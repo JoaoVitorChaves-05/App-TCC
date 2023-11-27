@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
     button: {
         padding: 10,
         backgroundColor: "#3D45F5",
-        borderRadius: 20
+        borderRadius: 20,
+        marginBottom: 10,
     },
     buttonText: {
         width: wp('50%')

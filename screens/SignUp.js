@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, View, StyleSheet, TextInput } from "react-native";
 import ResponsiveButton from "../components/ResponsiveButton.js";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -18,7 +18,10 @@ const tryNavigation = async ({username, email, password}, navigation) => {
 }
 
 export default function SignUp({ navigation }) {
-  console.log({ ...main.backgroundScreens });
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
   return (
     <View style={{ ...main.backgroundScreens, ...main.container }}>
       <StatusBar style='light' />
@@ -33,18 +36,18 @@ export default function SignUp({ navigation }) {
       <View style={{ ...main.form }}>
         <View style={{ ...main.formArea }}>
           <Text style={{ ...main.secondaryText }}>Username</Text>
-          <TextInput style={{ ...main.textInput, textAlign: 'center' }} placeholder="Username" />
+          <TextInput onChangeText={setUsername} value={setUsername} style={{ ...main.textInput, textAlign: 'center' }} placeholder="Username" />
         </View>
         <View style={{ ...main.formArea }}>
           <Text style={{ ...main.secondaryText }}>E-mail</Text>
-          <TextInput style={{ ...main.textInput, textAlign: 'center' }} placeholder="E-mail" />
+          <TextInput onChangeText={setEmail} value={setEmail} style={{ ...main.textInput, textAlign: 'center' }} placeholder="E-mail" />
         </View>
         <View style={{ ...main.formArea }}>
           <Text style={{ ...main.secondaryText }}>Password</Text>
-          <TextInput style={{ ...main.textInput, textAlign: 'center' }} placeholder="Password" secureTextEntry={true} />
+          <TextInput onChangeText={setPassword} value={setPassword} style={{ ...main.textInput, textAlign: 'center' }} placeholder="Password" secureTextEntry={true} />
         </View>
         <View style={{ ...main.formArea }}>
-          <ResponsiveButton text="Confirm" callback={() => navigation.navigate('UserPhoto')} />
+          <ResponsiveButton text="Confirm" callback={() => tryNavigation({username, email, password})} />
         </View>
       </View>
     </View>

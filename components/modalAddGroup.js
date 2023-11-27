@@ -5,12 +5,12 @@ import ResponsiveButton from '../components/ResponsiveButton.js';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import getIPAddress from './getIPAddress.js';
 
-export default function modalAddGroup({setNeedFetch, visible, setVisible}){
+export default function modalAddGroup({token, setNeedFetch, visible, setVisible}){
 
   const [key, setKey] = useState('')
 
   async function enterGroup() {
-    const result = await fetch(`http://${getIPAddress()}/key`, {method: 'POST', body: JSON.stringify({token, key}), headers: {'Content-Type': 'application/json'}})
+    const result = await fetch(`http://${getIPAddress()}:3000/group/user`, {method: 'POST', body: JSON.stringify({token, key}), headers: {'Content-Type': 'application/json'}})
     .then(res => res.json())
     .catch(err => console.log(err))
 

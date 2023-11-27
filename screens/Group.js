@@ -4,6 +4,8 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import ModalCreateGroup from "../components/modalCreateGroup.js" 
 import ModalAddGroup from "../components/modalAddGroup.js"
 import ModalEditGroupName from '../components/modalEditGroupName.js'
+import ModalCreateToken from '../components/modalCreateToken.js'
+import ModalAddCamera from '../components/modalAddCamera.js'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import ResponsiveButton from '../components/ResponsiveButton.js'
 import main from '../styles/Main'
@@ -31,7 +33,8 @@ export default function Group({ route, navigation }) {
 
     const token = route.params ? route.params.token : null;
 
-    const [editUserModalVisible, setEditUserModalVisible] = useState(false)
+    const [addCameraModalVisible, setAddCameraModalVisible] = useState(false)
+    const [createTokenModalVisible, setCreateTokenModalVisible] = useState(false)
     const [editGroupNameModalVisible, setEditGroupNameModalVisible] = useState(false)
     const [createGroupModalVisible, setCreateGroupModalVisible] = useState(false)
     const [addGroupModalVisible, setAddGroupModalVisible] = useState(false)
@@ -70,6 +73,28 @@ export default function Group({ route, navigation }) {
         }
     }
 
+    const exitGroupAlert = async () => {
+        const result = await fetch(`http://${getIPAddress()}:3000/group/user`, { method: 'DELETE', body: JSON.stringify({ token, group_id: currentGroup.group_id}), headers: { 'Content-Type': 'application/json' } })
+        .then(res => res.json())
+        .catch(err => console.log(err))
+
+        if (result.status) {
+            Alert.alert('You exited successfully', result.message, [
+                {
+                    text: 'OK'
+                }        
+            ])
+
+            setNeedFetch(true)
+        } else {
+            Alert.alert('Ops! Something went wrong.', result.message, [
+                {
+                    text: 'OK'
+                }
+            ])
+        }
+    }
+
     useEffect(() => {
         const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
             alert(navigation)
@@ -77,23 +102,26 @@ export default function Group({ route, navigation }) {
         })
 
         fetchData()
+        console.log('useEffect currentGroup', currentGroup)
 
         return () => backHandler.remove()
     }, [navigation, editMode, needFetch, currentGroup])
 
     const nextGroupButton = () => {
-        let currentGroupIndex = groupData.map((element, index) => currentGroup.group_id == element.group_id ? index : null)
-        if (currentGroupIndex[0] < groupData.length - 1) {
-            setCurrentGroup(groupData[currentGroupIndex[0]++])
-            console.log('nextGroup', groupData[currentGroupIndex[0]++])
+        if (groupData && currentGroup) {
+            const currentGroupIndex = groupData.findIndex(group => group.group_id === currentGroup.group_id);
+            if (currentGroupIndex < groupData.length - 1) {
+                setCurrentGroup(groupData[currentGroupIndex + 1]);
+            }
         }
     }
-
+    
     const previousGroupButton = () => {
-        let currentGroupIndex = groupData.map((element, index) => currentGroup.group_id == element.group_id ? index : null)
-        if (currentGroupIndex[0] != 0) {
-            setCurrentGroup(groupData[currentGroupIndex[0]--])
-            console.log('previousGroup', groupData[currentGroupIndex[0]--])
+        if (groupData && currentGroup) {
+            const currentGroupIndex = groupData.findIndex(group => group.group_id === currentGroup.group_id);
+            if (currentGroupIndex > 0) {
+                setCurrentGroup(groupData[currentGroupIndex - 1]);
+            }
         }
     }
 
@@ -106,7 +134,7 @@ export default function Group({ route, navigation }) {
                         <Text style={{...main.title, ...styles.groupNameTitle}}>{currentGroup.group_name}</Text>
                         <FlatList 
                             data={currentGroup.authorized_users}
-                            renderItem={({item}) => <UserItem userProfileId={userData.user_id} user_id={item.user_id} username={item.user_name} isAdmin={item.isAdmin} />}
+                            renderItem={({item}) => <UserItem user_id={item.user_id} username={item.user_name} isAdmin={item.isAdmin} />}
                             keyExtractor={item => item.user_id.toString()}
                         />
                     </View>
@@ -119,12 +147,6 @@ export default function Group({ route, navigation }) {
                             <Image style={styles.nextIcon} source={require('../assets/nextIcon.png')}></Image>
                         </TouchableOpacity>
                     </View>
-                </View>
-            )
-        } else {
-            return (
-                <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                    <Text>Não há nenhum grupo para este usuário.</Text>
                 </View>
             )
         }
@@ -144,7 +166,7 @@ export default function Group({ route, navigation }) {
                         </View>
                         <FlatList 
                             data={currentGroup.authorized_users}
-                            renderItem={({item}) => <UserItem token={token} currentGroup={currentGroup} setCurrentGroup={setCurrentGroup} username={item.user_name} currentPermission={item.isAdmin} setNeedFetch={setNeedFetch} editMode={true} />}
+                            renderItem={({item}) => <UserItem userProfileId={userData.user_id} user_id={item.user_id} token={token} currentGroup={currentGroup} setCurrentGroup={setCurrentGroup} username={item.user_name} isAdmin={item.isAdmin} setNeedFetch={setNeedFetch} editMode={true} />}
                             keyExtractor={item => item.user_id.toString()}
                         />
                     </View>
@@ -162,11 +184,13 @@ export default function Group({ route, navigation }) {
         }
     }
 
-    if (!editMode) {
+    if (!editMode && currentGroup) {
         return (
             <View style={{...main.backgroundScreens, ...main.container}}>
                 <ModalCreateGroup needFetch={needFetch} setNeedFetch={setNeedFetch} token={token} visible={createGroupModalVisible} setVisible={setCreateGroupModalVisible}/>
-                <ModalAddGroup token={token} visible={addGroupModalVisible} setVisible={setAddGroupModalVisible}/>
+                <ModalAddGroup token={token} visible={addGroupModalVisible} setVisible={setAddGroupModalVisible} setNeedFetch={setNeedFetch}/>
+                <ModalCreateToken token={token} visible={createTokenModalVisible} setVisible={setCreateTokenModalVisible} currentGroup={currentGroup} setCurrentGroup={setCurrentGroup} setNeedFetch={setNeedFetch}/>
+                <ModalAddCamera token={token} visible={addCameraModalVisible} setVisible={setAddCameraModalVisible} currentGroup={currentGroup}/>
                 <View style={styles.header}>
                     <View style={styles.photoContainer}>
                         <View style={styles.photo}>
@@ -188,10 +212,20 @@ export default function Group({ route, navigation }) {
                                     <Icon name='pencil' size={20}></Icon>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.buttons} onPress={() => setAddGroupModalVisible(true)}>
+                            <TouchableOpacity style={styles.buttons} onPress={() => setAddGroupModalVisible(!addGroupModalVisible)}>
                                 <View style={styles.icon}>
+                                    <Icon name='key' size={20}></Icon>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.buttons} onPress={() => setAddCameraModalVisible(!addCameraModalVisible)}>
+                                <View>
+                                    <Icon name='camera' size={20}></Icon>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.buttons} onPress={() => setCreateTokenModalVisible(!createTokenModalVisible)}>
+                                <View>
                                     <Icon name='plus' size={20}></Icon>
-                                </View>    
+                                </View>
                             </TouchableOpacity>
 
                         </View>
@@ -204,7 +238,7 @@ export default function Group({ route, navigation }) {
                 </View>
             </View>
         )
-    } else {
+    } else if (editMode && currentGroup) {
         return (
             <View style={{...main.backgroundScreens, ...main.container}}>
                 <View style={styles.header}>
@@ -232,6 +266,44 @@ export default function Group({ route, navigation }) {
                         </View>
                     </View>
                     <RenderEditableList />
+                </View>
+            </View>
+        )
+    } else {
+        return (
+            <View style={{...main.backgroundScreens, ...main.container}}>
+                <ModalCreateGroup needFetch={needFetch} setNeedFetch={setNeedFetch} token={token} visible={createGroupModalVisible} setVisible={setCreateGroupModalVisible}/>
+                <ModalAddGroup token={token} visible={addGroupModalVisible} setVisible={setAddGroupModalVisible}/>
+                <View style={styles.header}>
+                    <View style={styles.photoContainer}>
+                        <View style={styles.photo}>
+                            <View style={styles.online}></View>
+                        </View>
+                        <Text style={{...main.mainText}}>Welcome, {userData ? userData.user_name : 'User'}!</Text>
+                    </View>
+                    <TouchableOpacity style={styles.logoutButton} onPress={() => alert(navigation)}>
+                        <Text style={{textAlign: 'center'}}>Exit</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.mainContainer}>
+                    <View style={styles.mainContainerHeader}>
+                        <Text style={{...main.mainText, marginBottom: 10}}>Your groups</Text>
+                        <View style={{...styles.containerButtons, marginBottom: 10}}>
+
+                            <TouchableOpacity style={styles.buttons} onPress={() => setAddGroupModalVisible(true)}>
+                                <View style={styles.icon}>
+                                    <Icon name='plus' size={20}></Icon>
+                                </View>
+                            </TouchableOpacity>
+
+                        </View>
+                    </View>
+                    <View style={styles.group}>
+                        <Text style={{...main.title, ...styles.groupNameTitle}}>Não há nenhum grupo para este usuário.</Text>
+                    </View>
+                    <View style={{...main.form, marginTop: 20}}>
+                        <Text style={{...main.secondaryText, marginTop: 15}} onPress={() => setCreateGroupModalVisible(true)}>Create group</Text>
+                    </View>
                 </View>
             </View>
         )
