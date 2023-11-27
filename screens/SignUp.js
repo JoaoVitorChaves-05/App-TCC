@@ -36,18 +36,18 @@ export default function SignUp({ navigation }) {
       <View style={{ ...main.form }}>
         <View style={{ ...main.formArea }}>
           <Text style={{ ...main.secondaryText }}>Username</Text>
-          <TextInput onChangeText={setUsername} value={setUsername} style={{ ...main.textInput, textAlign: 'center' }} placeholder="Username" />
+          <TextInput onChangeText={setUsername} value={username} style={{ ...main.textInput, textAlign: 'center' }} placeholder="Username" />
         </View>
         <View style={{ ...main.formArea }}>
           <Text style={{ ...main.secondaryText }}>E-mail</Text>
-          <TextInput onChangeText={setEmail} value={setEmail} style={{ ...main.textInput, textAlign: 'center' }} placeholder="E-mail" />
+          <TextInput onChangeText={setEmail} value={email} style={{ ...main.textInput, textAlign: 'center' }} placeholder="E-mail" />
         </View>
         <View style={{ ...main.formArea }}>
           <Text style={{ ...main.secondaryText }}>Password</Text>
-          <TextInput onChangeText={setPassword} value={setPassword} style={{ ...main.textInput, textAlign: 'center' }} placeholder="Password" secureTextEntry={true} />
+          <TextInput onChangeText={setPassword} value={password} style={{ ...main.textInput, textAlign: 'center' }} placeholder="Password" secureTextEntry={true} />
         </View>
         <View style={{ ...main.formArea }}>
-          <ResponsiveButton text="Confirm" callback={() => tryNavigation({username, email, password})} />
+          <ResponsiveButton text="Confirm" callback={() => tryNavigation({username, email, password}, navigation)} />
         </View>
       </View>
     </View>
