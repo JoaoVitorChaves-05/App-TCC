@@ -29,6 +29,7 @@ export default function ModalEditUsers({token, currentGroup, setCurrentGroup, cu
                     text: 'OK'
                 }
             ])
+            setIsAdmin(currentPermission)
         }
 
         setVisible(false)

@@ -273,7 +273,7 @@ export default function Group({ route, navigation }) {
         return (
             <View style={{...main.backgroundScreens, ...main.container}}>
                 <ModalCreateGroup needFetch={needFetch} setNeedFetch={setNeedFetch} token={token} visible={createGroupModalVisible} setVisible={setCreateGroupModalVisible}/>
-                <ModalAddGroup token={token} visible={addGroupModalVisible} setVisible={setAddGroupModalVisible}/>
+                <ModalAddGroup token={token} visible={addGroupModalVisible} setVisible={setAddGroupModalVisible} setNeedFetch={setNeedFetch}/>
                 <View style={styles.header}>
                     <View style={styles.photoContainer}>
                         <View style={styles.photo}>
